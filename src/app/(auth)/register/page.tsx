@@ -1,52 +1,69 @@
 // src/app/(auth)/register/page.tsx
 'use client'
-import { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/config/firebase';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function RegisterPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const router = useRouter();
+  const [form, setForm] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    password: '',
+    role: 'homeowner',
+    city: 'Lahore',
+    address: ''
+  })
+  const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      router.push('/');
-    } catch (error) {
-      console.error('Registration error:', error);
-    }
-  };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log('Form data:', form) // We'll implement backend later
+    router.push('/')
+  }
 
   return (
-    <div className="max-w-md mx-auto mt-10">
+    <div className="max-w-md mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Register</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          placeholder="Full Name"
+          value={form.fullName}
+          onChange={(e) => setForm({...form, fullName: e.target.value})}
+          className="w-full p-2 border rounded"
+          required
+        />
         <input
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
-          className="w-full p-2 mb-3 border rounded"
+          value={form.email}
+          onChange={(e) => setForm({...form, email: e.target.value})}
+          className="w-full p-2 border rounded"
           required
         />
         <input
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
-          className="w-full p-2 mb-3 border rounded"
+          value={form.password}
+          onChange={(e) => setForm({...form, password: e.target.value})}
+          className="w-full p-2 border rounded"
           required
         />
-        <button 
-          type="submit" 
+        <select
+          value={form.role}
+          onChange={(e) => setForm({...form, role: e.target.value})}
+          className="w-full p-2 border rounded"
+        >
+          <option value="homeowner">Homeowner</option>
+          <option value="technician">Technician</option>
+        </select>
+        <button
+          type="submit"
           className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
         >
-          Sign Up
+          Register
         </button>
       </form>
     </div>
-  );
+  )
 }
