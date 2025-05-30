@@ -1,10 +1,5 @@
-import type { Metadata } from 'next'
-import './globals.css'
-
-export const metadata: Metadata = {
-  title: 'HomeServices Marketplace',
-  description: 'Connect with local professionals',
-}
+// src/app/layout.tsx
+import { AuthProvider } from '@/providers/auth-provider';
 
 export default function RootLayout({
   children,
@@ -14,10 +9,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <main className="min-h-screen">
+        <AuthProvider>
           {children}
-        </main>
+        </AuthProvider>
       </body>
     </html>
-  )
+  );
 }
